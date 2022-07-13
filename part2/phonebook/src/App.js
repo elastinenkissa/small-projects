@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import NewPerson from "./NewPerson";
+import PersonsList from "./PersonsList";
+import Search from "./Search";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -77,27 +80,19 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <div>
-        Filter by name: <input value={filter} onChange={filterNumberHandler} />
+        <Search filter={filter} onChange={filterNumberHandler} />
       </div>
       <h2>Add a new</h2>
-      <form onSubmit={addNumberHandler}>
-        <div>
-          name: <input value={newName} onChange={changeNameHandler} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={changeNumberHandler} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <NewPerson
+        onSubmit={addNumberHandler}
+        name={newName}
+        number={newNumber}
+        onChangeName={changeNameHandler}
+        onChangeNumber={changeNumberHandler}
+      />
       <h2>Numbers</h2>
       <div>
-        {filteredNumbers.map((person) => (
-          <p key={person.id}>
-            {person.name} {person.number}
-          </p>
-        ))}
+        <PersonsList filtered={filteredNumbers} />
       </div>
     </div>
   );
