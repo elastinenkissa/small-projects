@@ -1,8 +1,30 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 
 const CountryView = (props) => {
 
+  const [weather, setWeather] = useState({});
+
+  const API_KEY = process.env.REACT_APP_API_KEY;
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${props.country.capital}&aqi=no`
+      )
+      .then((res) => {
+        setWeather({
+          temp: res.data.current.temp_c,
+          wind: res.data.current.wind_kph,
+          icon: res.data.current.condition.icon,
+          text: res.data.current.condition.text
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <div>
@@ -24,8 +46,9 @@ const CountryView = (props) => {
       </div>
       <div>
         Weather in {props.country.capital}
-        <p>temperature {props.weather.temp} Celsius</p>
-        <p>wind {props.weather.speed} m/s</p>
+        <p>temperature {weather.temp} Celsius</p>
+        <img src={weather.icon} alt={weather.text} />
+        <p>wind {weather.wind} km/h</p>
       </div>
     </div>
   );
