@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import NewPerson from "./NewPerson";
+import Notification from "./Notification";
 import PersonsList from "./PersonsList";
 import Search from "./Search";
 
@@ -12,6 +13,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
   const [filteredNumbers, setFilteredNumbers] = useState(persons);
+  const [notification, setNotification] = useState(null);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     numberService.getAll().then((numbers) => setPersons(numbers));
@@ -25,13 +28,12 @@ const App = () => {
 
   const deleteHandler = (id, name) => {
     if (window.confirm(`Delete ${name}?`)) {
-      numberService.deleteObject(id).then((res) => {
-        setPersons(
-          persons.map((person) => {
-            return person.id !== res.id && person;
-          })
-        );
-      });
+      numberService.deleteObject(id);
+      setPersons(
+        persons.filter((person) => {
+          return person.id !== id;
+        })
+      );
     }
   };
 
@@ -75,13 +77,32 @@ const App = () => {
           `${newName} is already added to the phonebook. Replace the old number with a new one?`
         )
       ) {
-        numberService.update(updatingPerson.id, updatedPerson).then((res) => {
-          setPersons(
-            persons.map((person) =>
-              person.id !== updatingPerson.id ? person : res
-            )
-          );
-        });
+        numberService
+          .update(updatingPerson.id, updatedPerson)
+          .then((res) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== updatingPerson.id ? person : res
+              )
+            );
+            setNotification(`${newName} updated!`);
+            setTimeout(() => setNotification(null), 5000);
+          })
+          .catch((error) => {
+            setNotification(
+              `Information of ${newName} has already been removed from the server`
+            );
+            setHasError(true);
+            setTimeout(() => {
+              setNotification(null);
+              setHasError(false);
+            }, 5000);
+            setPersons(
+              persons.filter((person) => {
+                return person.id !== updatingPerson.id;
+              })
+            );
+          });
         setNewName("");
         setNewNumber("");
       }
@@ -89,12 +110,13 @@ const App = () => {
     }
     numberService.create(numberObject).then((newNumber) => {
       setPersons(persons.concat(newNumber));
+      setNotification(`Added ${newName}`);
+      setTimeout(() => setNotification(null), 5000);
+
       setNewName("");
       setNewNumber("");
     });
   };
-
- 
 
   const changeNameHandler = (event) => {
     setNewName(event.target.value);
@@ -114,6 +136,7 @@ const App = () => {
       <div>
         <Search filter={filter} onChange={filterNumberHandler} />
       </div>
+      <Notification message={notification} error={hasError} />
       <h2>Add a new</h2>
       <NewPerson
         onSubmit={addNumberHandler}
