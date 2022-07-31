@@ -1,5 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
+const Person = require("./models/person");
 
 const app = express();
 
@@ -10,88 +13,78 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
 
-let persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
-
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((response) => {
+    res.json(response);
+  });
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = +req.params.id;
-  const person = persons.find((person) => person.id === id);
-  res.json(person);
+  const id = req.params.id;
+  Person.findById(id).then((response) => {
+    res.json(response);
+  });
 });
 
 app.get("/info", (req, res) => {
-  const people = persons.length;
-  const currentDate = new Date();
-  res.send(
-    `<div><p>Phonebook has info for ${people} people</p><p>${date}</p></div>`
-  );
+  let people = 0;
+  Person.find({})
+    .then((response) => {
+      people = response.length;
+    })
+    .then(() => {
+      const currentDate = new Date();
+      res.send(
+        `<div><p>Phonebook has info for ${people} people</p><p>${currentDate}</p></div>`
+      );
+    });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  const id = +req.params.id;
-  persons = persons.filter((person) => person.id !== id);
-
-  res.status(204).end();
+  const id = req.params.id;
+  Person.findByIdAndRemove(id).then(() => {
+    res.status(204).end();
+  });
 });
 
 app.post("/api/persons", (req, res) => {
-  const alreadyExists = persons.find((person) => person.name === req.body.name);
+  const addingUserName = req.body.name;
+  const addingUserNumber = req.body.number;
 
-  if (alreadyExists) {
-    return res.status(400).json({
-      error: "Name must be unique.",
+  Person.find({ name: addingUserName }).then(() => {
+    if (!addingUserName || !addingUserName) {
+      return res.status(400).json({
+        error: "Name or number is missing.",
+      });
+    }
+
+    const person = new Person({
+      name: addingUserName,
+      number: addingUserNumber,
     });
-  }
 
-  if (!req.body.name || !req.body.number) {
-    return res.status(400).json({
-      error: "Name or number is missing.",
+    person.save().then((response) => {
+      res.json(response);
     });
-  }
-
-  const newPerson = {
-    id: Math.random(),
-    name: req.body.name,
-    number: req.body.number,
-  };
-  persons = persons.concat(newPerson);
-  res.json(newPerson);
+  });
 });
 
 app.put("/api/persons/:id", (req, res) => {
-  const id = +req.body.id;
-  const updatingPerson = {
-    ...req.body,
-    number: req.body.number,
-  };
-  persons = persons.map((person) =>
-    person.id !== id ? person : updatingPerson
-  );
-  res.json(updatingPerson);
+  const newNumber = req.body.number;
+
+  Person.findOneAndUpdate(
+    {
+      name: req.body.name,
+    },
+    {
+      number: newNumber,
+    },
+    {
+      new: true,
+    }
+  ).then((response) => {
+    res.json(response);
+  });
 });
 
 const PORT = process.env.PORT || 3001;
