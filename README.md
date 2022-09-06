@@ -16,3 +16,6 @@ The course is divided into 14 parts:
 <h4>Part 11 - CI/CD</h4>
 <h4>Part 12 - Containers</h4>
 <h4>Part 13 - Using relational databases</h4>
+(Descriptions to be added soon)
+# Achievements
+N/A
