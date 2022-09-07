@@ -1,25 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-
-const blogRoute = require('./controllers/blog-controller');
-
+const http = require('http');
+const app = require('./app');
 const config = require('./util/config');
-const middleware = require('./util/middleware');
+const logger = require('./util/logger');
 
-const app = express();
-
-app.use(express.json());
-app.use(cors());
-
-app.use(middleware.requestLogger);
-
-app.use('/api/blogs', blogRoute);
-
-app.use(middleware.errorHandler);
+const server = http.createServer(app);
 
 const PORT = config.PORT;
-console.log('    218u3');
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+server.listen(PORT, () => {
+    logger.info(`Server running on port ${PORT}`);
 });
