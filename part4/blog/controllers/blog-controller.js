@@ -18,4 +18,22 @@ router.post('/', async (req, res) => {
     res.status(201).json(newBlog);
 });
 
+router.delete('/:id', async (req, res) => {
+    await Blog.findByIdAndRemove(req.params.id);
+    res.status(204);
+});
+
+router.put('/:id', async (req, res) => {
+    const updatingBlog = {
+        ...req.body,
+        likes: req.body.likes,
+    };
+    const updatedBlog = await Blog.findByIdAndUpdate(
+        req.params.id,
+        updatingBlog,
+        { new: true }
+    );
+    res.status(200).json(updatedBlog);
+});
+
 module.exports = router;
