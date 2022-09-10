@@ -10,24 +10,25 @@ mongoose
     .then(() => logger.info('Connected'))
     .catch((error) => logger.error(error.message));
 
-const blogSchema = new mongoose.Schema({
-    title: {
+const userSchema = new mongoose.Schema({
+    username: {
         type: String,
         required: true,
     },
-    author: String,
-    url: {
+    name: String,
+    password: {
         type: String,
         required: true,
     },
-    likes: Number,
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
+    blogs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Blog',
+        },
+    ],
 });
 
-blogSchema.set('toJSON', {
+userSchema.set('toJSON', {
     transform: (document, object) => {
         object.id = object._id.toString();
         delete object._id;
@@ -35,6 +36,6 @@ blogSchema.set('toJSON', {
     },
 });
 
-const Blog = mongoose.model('Blog', blogSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = Blog;
+module.exports = User;
