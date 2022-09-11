@@ -1,22 +1,27 @@
-require('express-async-errors')
+require('express-async-errors');
 const express = require('express');
 const cors = require('cors');
 
 const blogRoute = require('./controllers/blog');
-const userRoute = require('./controllers/user')
+const userRoute = require('./controllers/user');
 
 const middleware = require('./util/middleware');
+const database = require('./util/database-connection');
 
 const app = express();
+
+database.connect();
 
 app.use(express.json());
 app.use(cors());
 
 app.use(middleware.requestLogger);
 
+app.use(middleware.getToken);
+
 app.use('/api/blogs', blogRoute);
 
-app.use('/api/users', userRoute)
+app.use('/api/users', userRoute);
 
 app.use(middleware.errorHandler);
 

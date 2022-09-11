@@ -1,16 +1,24 @@
+require('express-async-errors');
 const express = require('express');
 const router = express.Router();
 
 const Blog = require('../models/blog');
-const User = require('../models/user')
+const User = require('../models/user');
+
+const middleware = require('../util/middleware');
 
 router.get('/', async (req, res) => {
     const blogs = await Blog.find({}).populate('author');
     res.status(200).json(blogs);
 });
 
-router.post('/', async (req, res) => {
-    const user = await User.findOne({})
+router.post('/', middleware.getUser, async (req, res) => {
+    const authorizedUser = req.user;
+    if (!authorizedUser.id) {
+        return res.status(401).json({ error: 'Invalid token.' });
+    }
+
+    const user = await User.findById(authorizedUser.id);
 
     const blog = new Blog({
         title: req.body.title,
@@ -19,14 +27,33 @@ router.post('/', async (req, res) => {
         likes: req.body.likes || 0,
     });
     const newBlog = await blog.save();
-    user.blogs = user.blogs.concat(newBlog._id)
-    await user.save()
+    user.blogs = user.blogs.concat(newBlog._id);
+    await user.save();
     res.status(201).json(newBlog);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', middleware.getUser, async (req, res) => {
+    const authorizedUser = req.user;
+
+    if (!authorizedUser.id) {
+        return res.status(401).json({ error: 'Invalid token.' });
+    }
+
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+        return res.status(404).json({ error: 'Blog is already removed.' });
+    }
+
+    const blogAuthor = blog.author.toString();
+    const requestingUser = authorizedUser.id;
+
+    if (blogAuthor !== requestingUser) {
+        return res.status(401).json({ error: 'Unauthorized.' });
+    }
+
     await Blog.findByIdAndRemove(req.params.id);
-    res.status(204);
+    res.status(204).json({ message: 'Blog successfully removed.' });
 });
 
 router.put('/:id', async (req, res) => {

@@ -1,15 +1,5 @@
 const mongoose = require('mongoose');
 
-const config = require('../util/config');
-const logger = require('../util/logger');
-
-const url = config.MONGODB_URL;
-
-mongoose
-    .connect(url)
-    .then(() => logger.info('Connected'))
-    .catch((error) => logger.error(error.message));
-
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
