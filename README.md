@@ -1,4 +1,4 @@
-# fullstackopen
+# The Course
 "Fullstack Open" is a free course provided by University of Helsinki to everyone, accessible online. It teaches fullstack web developement with JavaScript, as well as general programming practices.
 
 # Segments
