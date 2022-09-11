@@ -29,7 +29,7 @@ const blogs = [
         _id: '5a422b891b54a676234d17fa',
         title: 'First class tests',
         author: 'Robert C. Martin',
-        url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+        url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html',
         likes: 10,
         __v: 0,
     },
@@ -60,22 +60,28 @@ describe('dummy test', () => {
     });
 });
 
-describe('blog likes sum', () => {
+describe('blogs', () => {
     test('sum of all blog likes', () => {
         const result = listHelper.totalLikes(blogs);
         expect(result).toBe(36);
     });
-});
 
-describe('favorite blog', () => {
     test('blog with most likes', () => {
         const mostLikes = {
             title: blogs[2].title,
             author: blogs[2].author,
             likes: blogs[2].likes
         }
-
         const result = listHelper.favoriteBlog(blogs);
         expect(result).toEqual(mostLikes);
     });
+
+    test('author with most blogs', () => {
+        const blog = {
+            author: 'Robert C. Martin',
+            blogs: 3
+        }
+        const result = listHelper.mostBlogs(blogs)
+        expect(result).toEqual(blog)
+    })
 });
