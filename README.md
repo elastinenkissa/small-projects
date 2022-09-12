@@ -10,7 +10,7 @@ The course is divided into 14 parts:
 <h4>Part 2 - Communicating with server</h4>
 <p>This part takes a look at how to render data collections, how users can submit data to a React application using HTML forms. Then the focus shifts towards looking at how JavaScript code in the browser can fetch and handle data stored in a remote backend server.</p>
 <h4>Part 3 - Programming a server with NodeJS and Express</h4>
-<p>In this part the focus shifts towards the backend, that is, towards implementing functionality on the server side of the stack. It implements a simple REST API in Node.js by using the Express library, and the application's data will be stored in a MongoDB database. At the end of the part, the application is deployed to the internet.</p>
+<p>In this part, the focus shifts towards the backend, that is, towards implementing functionality on the server side of the stack. It implements a simple REST API in Node.js by using the Express library, and the application's data will be stored in a MongoDB database. At the end of the part, the application is deployed to the internet.</p>
 <h4>Part 4 - Testing Express servers, user administration</h4>
 <p>In this part, the course continues to work on the backend. The first major theme is writing unit and integration tests for the backend. After testing, it takes a look at implementing user authentication and authorization.</p>
 <h4>Part 5 - Testing React apps</h4>
