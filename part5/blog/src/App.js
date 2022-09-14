@@ -3,6 +3,7 @@ import Blog from './components/Blog';
 import Login from './components/Login';
 import NewBlog from './components/NewBlog';
 import Notification from './components/Notification';
+import Toggable from './components/Toggable';
 import blogService from './services/blogs';
 import userService from './services/users';
 
@@ -11,8 +12,6 @@ const App = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
-    const [title, setTitle] = useState('');
-    const [url, setUrl] = useState('');
     const [hasError, setHasError] = useState(false);
     const [notification, setNotification] = useState(null);
 
@@ -60,7 +59,7 @@ const App = () => {
             setPassword('');
         } catch (error) {
             setHasError(true);
-            setNotification('Wrong username of password.');
+            setNotification('Wrong username or password.');
             setTimeout(() => {
                 setHasError(false);
                 setNotification(null);
@@ -74,37 +73,22 @@ const App = () => {
         blogService.setToken('');
     };
 
-    const titleChangeHandler = (event) => {
-        setTitle(event.target.value);
-    };
-
-    const urlChangeHandler = (event) => {
-        setUrl(event.target.value);
-    };
-
-    const createBlogHandler = async (event) => {
+    const createBlogHandler = async (newBlog) => {
         try {
-            event.preventDefault();
-            const newBlog = {
-                title: title,
-                url: url,
-            };
             const blog = await blogService.createNew(newBlog);
             setNotification(
-                `A new blog "${newBlog.title}" by ${newBlog.url} has been added`
+                `A new blog "${newBlog.title}" by ${user.name} has been added`
             );
             setTimeout(() => {
-              setNotification(null)
+                setNotification(null);
             }, 3000);
             setBlogs(blogs.concat(blog));
-            setTitle('');
-            setUrl('');
         } catch (error) {
             setHasError(true);
             setNotification('Blog must have a title and a URL!');
             setTimeout(() => {
-              setHasError(false)
-              setNotification(null)
+                setHasError(false);
+                setNotification(null);
             }, 3000);
         }
     };
@@ -134,13 +118,11 @@ const App = () => {
                 Logged in as {user.name}
                 <button onClick={logoutHandler}>Logout</button>
                 <h2>Create new blog</h2>
-                <NewBlog
-                    title={title}
-                    url={url}
-                    onCreate={createBlogHandler}
-                    titleChange={titleChangeHandler}
-                    urlChange={urlChangeHandler}
-                />
+                <Toggable hiddenText="Cancel" visibleText="Create new blog">
+                    <NewBlog
+                        onCreate={createBlogHandler}
+                    />
+                </Toggable>
                 <h2>Blogs</h2>
                 {blogs.map((blog) => (
                     <Blog key={blog.id} blog={blog} />
