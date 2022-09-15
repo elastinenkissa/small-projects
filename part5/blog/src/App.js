@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import Login from './components/Login';
 import NewBlog from './components/NewBlog';
@@ -31,6 +31,8 @@ const App = () => {
             blogService.setToken(loggedUser.token);
         }
     }, []);
+
+    const blogRef = useRef();
 
     const usernameInputHandler = (event) => {
         setUsername(event.target.value);
@@ -75,9 +77,10 @@ const App = () => {
 
     const createBlogHandler = async (newBlog) => {
         try {
-            const blog = await blogService.createNew(newBlog);
+            blogRef.current.toggleVisible();
+            const blog = await blogService.create(newBlog);
             setNotification(
-                `A new blog "${newBlog.title}" by ${user.name} has been added`
+                `A new blog "${blog.title}" by ${user.name} has been added`
             );
             setTimeout(() => {
                 setNotification(null);
@@ -91,6 +94,27 @@ const App = () => {
                 setNotification(null);
             }, 3000);
         }
+    };
+
+    const likeBlogHandler = async (updatingBlog) => {
+        const id = updatingBlog.id;
+        const likedBlog = await blogService.update(updatingBlog, id);
+        setBlogs(
+            blogs.map((blog) => (blog.id !== likedBlog.id ? blog : likedBlog))
+        );
+    };
+
+    const likesSortHandler = () => {
+        const sortedBlogs = blogs.sort((a, b) => {
+            return b.likes - a.likes;
+        });
+        setBlogs(sortedBlogs.map((blog) => blog));
+    };
+
+    const deleteBlogHandler = async (id, title) => {
+        window.confirm(`Are you sure you want to delete the blog "${title}"`)
+        const blog = await blogService.delet(id);
+        setBlogs(blogs.filter((blog) => blog.id !== id));
     };
 
     if (user === null) {
@@ -118,14 +142,25 @@ const App = () => {
                 Logged in as {user.name}
                 <button onClick={logoutHandler}>Logout</button>
                 <h2>Create new blog</h2>
-                <Toggable hiddenText="Cancel" visibleText="Create new blog">
-                    <NewBlog
-                        onCreate={createBlogHandler}
-                    />
+                <Toggable
+                    hiddenText="Cancel"
+                    visibleText="Create new blog"
+                    ref={blogRef}
+                >
+                    <NewBlog onCreate={createBlogHandler} />
                 </Toggable>
                 <h2>Blogs</h2>
+                <button onClick={likesSortHandler}>
+                    Sort by number of likes
+                </button>
                 {blogs.map((blog) => (
-                    <Blog key={blog.id} blog={blog} />
+                    <Blog
+                        key={blog.id}
+                        blog={blog}
+                        user={user}
+                        onLike={likeBlogHandler}
+                        onDelete={deleteBlogHandler}
+                    />
                 ))}
             </div>
         </>

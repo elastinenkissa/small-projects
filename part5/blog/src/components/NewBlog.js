@@ -3,6 +3,7 @@ import { useState } from 'react';
 const NewBlog = (props) => {
     const [title, setTitle] = useState('');
     const [url, setUrl] = useState('');
+    const [author, setAuthor] = useState('');
 
     const titleChangeHandler = (event) => {
         setTitle(event.target.value);
@@ -12,14 +13,20 @@ const NewBlog = (props) => {
         setUrl(event.target.value);
     };
 
+    const authorChangeHandler = (event) => {
+        setAuthor(event.target.value);
+    };
+
     const createBlogHandler = (event) => {
         event.preventDefault();
         props.onCreate({
             title: title,
+            author: author,
             url: url,
         });
         setTitle('');
         setUrl('');
+        setAuthor('');
     };
 
     return (
@@ -29,8 +36,17 @@ const NewBlog = (props) => {
                 <input
                     type="text"
                     name="title"
-                    value={props.title}
+                    value={title}
                     onChange={titleChangeHandler}
+                />
+            </div>
+            <div>
+                Author:
+                <input
+                    type="text"
+                    name="author"
+                    value={author}
+                    onChange={authorChangeHandler}
                 />
             </div>
             <div>
@@ -38,7 +54,7 @@ const NewBlog = (props) => {
                 <input
                     type="url"
                     name="url"
-                    value={props.url}
+                    value={url}
                     onChange={urlChangeHandler}
                 />
             </div>
