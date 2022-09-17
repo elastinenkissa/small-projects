@@ -39,7 +39,7 @@ const delet = async (id) => {
         },
     };
     const blog = await axios.delete(`${baseUrl}/${id}`, config);
-    return blog.data
+    return blog.data;
 };
 
 export default { setToken, getAll, create, update, delet };

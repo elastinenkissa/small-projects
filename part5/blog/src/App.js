@@ -112,8 +112,8 @@ const App = () => {
     };
 
     const deleteBlogHandler = async (id, title) => {
-        window.confirm(`Are you sure you want to delete the blog "${title}"`)
-        const blog = await blogService.delet(id);
+        window.confirm(`Are you sure you want to delete the blog "${title}"`);
+        await blogService.delet(id);
         setBlogs(blogs.filter((blog) => blog.id !== id));
     };
 

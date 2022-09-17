@@ -38,6 +38,7 @@ const NewBlog = (props) => {
                     name="title"
                     value={title}
                     onChange={titleChangeHandler}
+                    placeholder="Title here..."
                 />
             </div>
             <div>
@@ -47,6 +48,7 @@ const NewBlog = (props) => {
                     name="author"
                     value={author}
                     onChange={authorChangeHandler}
+                    placeholder="Author here..."
                 />
             </div>
             <div>
@@ -56,6 +58,7 @@ const NewBlog = (props) => {
                     name="url"
                     value={url}
                     onChange={urlChangeHandler}
+                    placeholder="URL here..."
                 />
             </div>
             <button type="submit">Create</button>

@@ -3,8 +3,7 @@ const baseUrl = '/api/users';
 
 const login = async (credentials) => {
     const user = await axios.post(`${baseUrl}/login`, credentials);
-    return user.data
-    
+    return user.data;
 };
 
 export default { login };

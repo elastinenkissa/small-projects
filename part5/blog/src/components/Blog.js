@@ -30,21 +30,21 @@ const Blog = (props) => {
 
     return (
         <div style={blogStyle}>
-            <div>
+            <div className='initial'>
                 {props.blog.title} - <strong>{props.blog.author}</strong>
-                <button onClick={toggleVisible}>
+                <button onClick={toggleVisible} className='viewButton'>
                     {blogInfoVisibility ? 'Hide' : 'View'}
                 </button>
-                {props.blog.user.username === props.user.username && (
+                {props.user && props.blog.user.username === props.user.username && (
                     <button onClick={deleteBlogHandler}>Delete</button>
                 )}
             </div>
             {blogInfoVisibility && (
-                <div>
-                    <p>{props.blog.url}</p>{' '}
+                <div className='hidden'>
+                    <p>{props.blog.url}</p>
                     <p>
-                        Likes: {props.blog.likes}{' '}
-                        <button onClick={likeBlogHandler}>Like</button>
+                        Likes: {props.blog.likes}
+                        <button onClick={likeBlogHandler} className="likeButton">Like</button>
                     </p>
                     <p>Posted by {props.blog.user.name}</p>
                 </div>
