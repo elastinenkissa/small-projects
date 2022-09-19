@@ -14,7 +14,7 @@ The course is divided into 14 parts:
 <h4>Part 4 - Testing Express servers, user administration</h4>
 <p>In this part, the course continues to work on the backend. The first major theme is writing unit and integration tests for the backend. After testing, it takes a look at implementing user authentication and authorization.</p>
 <h4>Part 5 - Testing React apps</h4>
-<p></p>
+<p>In this part the course returns to the frontend, first looking at different possibilities for testing the React code. What is also implement is token based authentication which will enable users to log in to the application.</p>
 <h4>Part 6 - State management with Redux</h4>
 <p></p>
 <h4>Part 7 - React router, custom hooks, styling app with CSS and webpack</h4>
