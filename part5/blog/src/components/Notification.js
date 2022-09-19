@@ -22,7 +22,7 @@ const Notification = (props) => {
     };
 
     return (
-        <div style={props.error ? errorStyle : normalStyle}>
+        <div style={props.error ? errorStyle : normalStyle} id="notification">
             {props.message}
         </div>
     );

@@ -77,8 +77,8 @@ const App = () => {
 
     const createBlogHandler = async (newBlog) => {
         try {
-            blogRef.current.toggleVisible();
             const blog = await blogService.create(newBlog);
+            blogRef.current.toggleVisible();
             setNotification(
                 `A new blog "${blog.title}" by ${user.name} has been added`
             );
