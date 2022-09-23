@@ -1,35 +1,31 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useField } from '../hooks';
 
 const NewAnecdote = (props) => {
     const navigate = useNavigate();
 
-    const [content, setContent] = useState('');
-    const [author, setAuthor] = useState('');
-    const [info, setInfo] = useState('');
+    const content = useField('text');
+    const author = useField('text');
+    const info = useField('url');
+
+    const resetFormHandler = () => {
+        content.onReset();
+        author.onReset();
+        info.onReset();
+    };
 
     const submitHandler = (event) => {
         event.preventDefault();
         props.onAdd({
-            content,
-            author,
-            info,
+            content: content.value,
+            author: author.value,
+            info: info.value,
             votes: 0,
         });
         navigate('/');
-        props.onSetNotification(`A new anecdote: ${content} has been created`);
-    };
-
-    const contentChangeHandler = (event) => {
-        setContent(event.target.value);
-    };
-
-    const authorChangeHandler = (event) => {
-        setAuthor(event.target.value);
-    };
-
-    const infoChangeHandler = (event) => {
-        setInfo(event.target.value);
+        props.onSetNotification(
+            `A new anecdote: ${content.value} has been created`
+        );
     };
 
     return (
@@ -38,29 +34,18 @@ const NewAnecdote = (props) => {
             <form onSubmit={submitHandler}>
                 <div>
                     Content:
-                    <input
-                        name="content"
-                        value={content}
-                        onChange={contentChangeHandler}
-                    />
+                    <input {...content} />
                 </div>
                 <div>
                     Author:
-                    <input
-                        name="author"
-                        value={author}
-                        onChange={authorChangeHandler}
-                    />
+                    <input {...author} />
                 </div>
                 <div>
                     URL for more info:
-                    <input
-                        name="info"
-                        value={info}
-                        onChange={infoChangeHandler}
-                    />
+                    <input {...info} />
                 </div>
-                <button>Create</button>
+                <button type="submit">Create</button>
+                <button type='button' onClick={resetFormHandler}>Reset</button>
             </form>
         </div>
     );
