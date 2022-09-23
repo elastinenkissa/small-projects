@@ -16,7 +16,7 @@ The course is divided into 14 parts:
 <h4>Part 5 - Testing React apps</h4>
 <p>In this part the course returns to the frontend, first looking at different possibilities for testing the React code. What is also implement is token based authentication which will enable users to log in to the application.</p>
 <h4>Part 6 - State management with Redux</h4>
-<p></p>
+<p>So far, the application's state and state logic was located directly inside React components. Part 6 teaches that when applications grow larger, state management should be moved outside React components. The Redux library is introduced, which is currently the most popular solution for managing the state of React applications.</p>
 <h4>Part 7 - React router, custom hooks, styling app with CSS and webpack</h4>
 <p></p>
 <h4>Part 8 - GraphQL</h4>
