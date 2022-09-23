@@ -1,22 +1,24 @@
-import { useDispatch } from 'react-redux';
-import { newAnecdote } from '../reducers/anecdoteReducer';
-import { setNotification, removeNotification } from '../reducers/notificationReducer';
+import { connect } from 'react-redux';
+import { createNew } from '../reducers/anecdoteReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
-const AnecdoteForm = () => {
-    const dispatch = useDispatch();
-
-    const newAnecdoteHandler = (event) => {
+const AnecdoteForm = (props) => {
+    const newAnecdoteHandler = async (event) => {
         event.preventDefault();
         if (event.target.new.value === '') {
             return alert('No empty pls');
         }
-        dispatch(newAnecdote(event.target.new.value));
-        dispatch(setNotification(`Successfully added ${event.target.new.value}`))
-        setTimeout(() => {
-            dispatch(removeNotification())
-        }, 5000);
+        const anecdote = {
+            content: event.target.new.value,
+            votes: 0,
+        };
+        props.createNew(anecdote);
+        props.setNotification(
+            `Created new anecdote: ${event.target.new.value}`,
+            5
+        );
+
         event.target.new.value = '';
-        
     };
 
     return (
@@ -32,4 +34,9 @@ const AnecdoteForm = () => {
     );
 };
 
-export default AnecdoteForm;
+const mapDispatchToProps = {
+    createNew,
+    setNotification,
+};
+
+export default connect(null, mapDispatchToProps)(AnecdoteForm);
