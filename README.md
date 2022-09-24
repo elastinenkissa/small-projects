@@ -18,7 +18,7 @@ The course is divided into 14 parts:
 <h4>Part 6 - State management with Redux</h4>
 <p>So far, the application's state and state logic was located directly inside React components. Part 6 teaches that when applications grow larger, state management should be moved outside React components. The Redux library is introduced, which is currently the most popular solution for managing the state of React applications.</p>
 <h4>Part 7 - React router, custom hooks, styling app with CSS and webpack</h4>
-<p></p>
+<p>The seventh part of the course touches on several different themes. First, it familiarizes with React router. React router helps divide the application into different views that are shown based on the URL in the browser's address bar. It also takes a look at a few more ways to add CSS styles to React applications. During the entire course, create-react-app is used to generate the body of the applications. This pat takes a look under the hood: how Webpack works and how one can use it to configure the application. It also takes a look at hook functions and how to define a custom hook.</p>
 <h4>Part 8 - GraphQL</h4>
 <p></p>
 <h4>Part 9 - TypeScript</h4>
