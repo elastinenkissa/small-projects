@@ -6,7 +6,9 @@ const Author = (props) => {
     const [editMode, setEditMode] = useState(false);
     const [born, setBorn] = useState(props.author.born);
 
-    const [editAuthor] = useMutation(EDIT_AUTHOR);
+    const [editAuthor] = useMutation(EDIT_AUTHOR, {
+        refetchQueries: [{ query: ALL_AUTHORS }],
+    });
 
     const bornStyle = {
         width: 28,
@@ -21,7 +23,9 @@ const Author = (props) => {
         if (!editMode) {
             return;
         }
-        editAuthor({ variables: { name: props.author.name, setBornTo: +born } });
+        editAuthor({
+            variables: { name: props.author.name, setBornTo: +born },
+        });
     };
 
     return (
@@ -63,11 +67,10 @@ const Authors = (props) => {
                     <tr>
                         <th></th>
                         <th>born</th>
-                        <th>books</th>
                     </tr>
-                    {authors.data.allAuthors.map((a) => (
-                        <tr key={a.name}>
-                            <Author author={a} />
+                    {authors.data?.allAuthors.map((author) => (
+                        <tr key={author.name}>
+                            <Author author={author} />
                         </tr>
                     ))}
                 </tbody>
