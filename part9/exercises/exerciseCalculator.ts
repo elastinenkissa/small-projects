@@ -8,10 +8,13 @@ interface Result {
     feedback: string;
 }
 
-const calculateExercises = (hoursDaily: Array<number>, dailyTarget: number): Result => {
-    let periodDays: number = 0;
-    let trainingDays: number = 0;
-    let sum: number = 0;
+export const calculateExercises = (
+    hoursDaily: Array<number>,
+    dailyTarget: number
+): Result => {
+    let periodDays = 0;
+    let trainingDays = 0;
+    let sum = 0;
 
     hoursDaily.map((day) => {
         if (isNaN(day)) {
@@ -26,13 +29,10 @@ const calculateExercises = (hoursDaily: Array<number>, dailyTarget: number): Res
         }
     });
 
-    const averageTimeFunc: number = hoursDaily.reduce(
-        (prevValue, currentValue) => {
-            sum += currentValue;
-            return sum;
-        },
-        0
-    );
+    hoursDaily.reduce((_prevValue, currentValue) => {
+        sum += currentValue;
+        return sum;
+    }, 0);
 
     const averageTime: number = sum / periodDays;
 
@@ -45,10 +45,10 @@ const calculateExercises = (hoursDaily: Array<number>, dailyTarget: number): Res
         switch (rating) {
             case 1:
                 return 'You can do better...';
-            case 2:
-                return 'Solid.';
             case 3:
                 return 'Great, keep it up!';
+            default:
+                return 'Solid';
         }
     };
 
@@ -70,5 +70,6 @@ numberArgv.shift();
 try {
     console.log(calculateExercises(numberArgv, 2));
 } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     console.error(`Error: ${error.message}`);
 }
