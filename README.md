@@ -22,7 +22,7 @@ The course is divided into 14 parts:
 <h4>Part 8 - GraphQL</h4>
 <p>This part of the course is about GraphQL, Facebook's alternative to REST for communication between browser and server.</p>
 <h4>Part 9 - TypeScript</h4>
-<p></p>
+<p>This part is all about TypeScript: an open-source typed superset of JavaScript developed by Microsoft that compiles to plain JavaScript. In this part, the course implements tools previously introduced to build end-to-end features to an existing ecosystem with linters predefined and an existing codebase writing TypeScript.</p>
 <h4>Part 10 - React Native</h4>
 <p></p>
 <h4>Part 11 - CI/CD</h4>
