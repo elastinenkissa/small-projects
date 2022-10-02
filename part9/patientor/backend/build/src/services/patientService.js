@@ -1,12 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewPatient = exports.getPatientsWithNoSSN = exports.getAllPatients = void 0;
+exports.addNewPatient = exports.getPatientsWithNoSSN = exports.getPatient = exports.getAllPatients = void 0;
 const patients_1 = require("../data/patients");
 const uuid_1 = require("uuid");
 const getAllPatients = () => {
     return patients_1.patients;
 };
 exports.getAllPatients = getAllPatients;
+const getPatient = (id) => {
+    const patient = patients_1.patients.find((patient) => patient.id === id);
+    return patient;
+};
+exports.getPatient = getPatient;
 const getPatientsWithNoSSN = () => {
     return patients_1.patients.map((patient) => {
         return {

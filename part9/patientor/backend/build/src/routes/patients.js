@@ -8,8 +8,16 @@ const patientService_1 = require("../services/patientService");
 const utils_1 = require("../services/utils");
 const router = express_1.default.Router();
 router.get('/', (_req, res) => {
-    const patients = (0, patientService_1.getPatientsWithNoSSN)();
+    const patients = (0, patientService_1.getAllPatients)();
     res.status(200).json(patients);
+});
+router.get('/:id', (req, res) => {
+    const patient = (0, patientService_1.getPatient)(req.params.id);
+    console.log('fetch');
+    if (!patient) {
+        return res.status(400).json({ error: 'No patient with that id.' });
+    }
+    return res.status(200).json(patient);
 });
 router.post('/', (req, res) => {
     const patient = (0, utils_1.toNewPatient)({

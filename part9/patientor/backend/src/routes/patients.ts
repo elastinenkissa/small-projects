@@ -1,17 +1,27 @@
 import express from 'express';
 
 import {
-    getPatientsWithNoSSN,
     addNewPatient,
+    getPatient,
+    getAllPatients,
 } from '../services/patientService';
 import { toNewPatient } from '../services/utils';
-import { NewPatient, Patient, PatientWithNoSSN } from '../types/patient';
+import { NewPatient, Patient, PublicPatient } from '../types/patient';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    const patients: PatientWithNoSSN[] = getPatientsWithNoSSN();
+    const patients: PublicPatient[] = getAllPatients();
     res.status(200).json(patients);
+});
+
+router.get('/:id', (req, res) => {
+    const patient: Patient | undefined = getPatient(req.params.id);
+    console.log('fetch');
+    if (!patient) {
+        return res.status(400).json({ error: 'No patient with that id.' });
+    }
+    return res.status(200).json(patient);
 });
 
 router.post('/', (req, res) => {
