@@ -46,9 +46,31 @@ export const reducer = (state: State, action: Action): State => {
             return {
                 patients: {
                     ...state.patients,
+                    [action.payload.id]: action.payload,
                 },
             };
         default:
             return state;
     }
+};
+
+export const setPatients = (patients: Patient[]): Action => {
+    return {
+        type: 'SET_PATIENT_LIST',
+        payload: patients,
+    };
+};
+
+export const setPatient = (patient: Patient): Action => {
+    return {
+        type: 'SET_PATIENT',
+        payload: patient,
+    };
+};
+
+export const addPatient = (patient: Patient): Action => {
+    return {
+        type: 'ADD_PATIENT',
+        payload: patient,
+    };
 };

@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { apiBaseUrl } from '../constants';
-import { useStateValue } from '../state';
+import { setPatient, useStateValue } from '../state';
 import { Patient } from '../types';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -13,10 +13,12 @@ const PatientPage = () => {
     const [state, dispatch] = useStateValue();
 
     React.useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const patientJSON: Patient = JSON.parse(
+            localStorage.getItem(`patient ${id}`) || '{}'
+        );
         const fetchPatient = async () => {
             try {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const patientJSON: Patient = JSON.parse(localStorage.getItem(`patient ${id}`) || '{}');
                 if (!patientJSON) {
                     const { data: patient } = await axios.get<Patient>(
                         `${apiBaseUrl}/patients/${id}`
@@ -25,8 +27,9 @@ const PatientPage = () => {
                         `patient ${id}`,
                         JSON.stringify(patient)
                     );
-                    dispatch({ type: 'SET_PATIENT', payload: patient });
+                    return dispatch(setPatient(patient));
                 }
+                dispatch(setPatient(patientJSON));
             } catch (error) {
                 console.log(error);
             }
@@ -50,6 +53,34 @@ const PatientPage = () => {
                         <p>ssh: {state.patients[id].ssn}</p>
                         <p>occupation: {state.patients[id].occupation}</p>
                     </div>
+                    <h2>Entries</h2>
+                    {state.patients[id].entries.map((entry) => {
+                        switch (entry.type) {
+                            case 'HealthCheck':
+                                return (
+                                    <div
+                                        style={{
+                                            border: 1,
+                                            borderStyle: 'solid',
+                                            margin: 15,
+                                        }}
+                                    >
+                                        <em key={entry.id}>
+                                            {entry.date} {entry.description}
+                                            <ul>
+                                                {entry.diagnosisCodes?.map(
+                                                    (code) => (
+                                                        <li key={code}>
+                                                            {code}
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
+                                        </em>
+                                    </div>
+                                );
+                        }
+                    })}
                 </div>
             )}
         </div>
