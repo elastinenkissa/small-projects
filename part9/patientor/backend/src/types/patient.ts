@@ -1,5 +1,13 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Entry {}
+import {
+    HealthCheckEntry,
+    HospitalEntry,
+    OccupationalHealthcareEntry,
+} from './entry';
+
+export type Entry =
+    | HospitalEntry
+    | OccupationalHealthcareEntry
+    | HealthCheckEntry;
 
 export interface Patient {
     id: string;
