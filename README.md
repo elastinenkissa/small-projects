@@ -26,13 +26,11 @@ The course is divided into 14 parts:
 <h4>Part 10 - React Native</h4>
 <p>In this part, the course teaches how to build native Android and iOS mobile applications with JavaScript and React using the React Native framework. It dives into the React Native ecosystem by having us develop an entire mobile application from scratch. Along the way, it teaches concepts such as how to render native user interface components with React Native, how to create beautiful user interfaces, how to communicate with a server, and how to test a React Native application.</p>
 <h4>Part 11 - CI/CD</h4>
-<p></p>
+<p>This part teaches Continuous Integration / Continuous Delivery systems, in short CI/CD systems. The course gives an understanding of why one should use a CI/CD system, what can one do for you, and how to get started with GitHub Actions which is available to all GitHub users by default.</p>
 <h4>Part 12 - Containers</h4>
-<p></p>
+<p>In this part, the course teaches how to package code into standard units of software called containers. These containers can help develop software faster and easier than before. Along the way, it also explores a completely new viewpoint for web development outside of the now-familiar Node.js backend and React frontend. It utilizes containers to create immutable execution environments for Node.js and React projects. Containers also make it easy to include multiple services with projects. With the flexibility, it explores and experiments with many different and popular tools by utilizing containers.</p>
 <h4>Part 13 - Using relational databases</h4>
-<p></p>
-
-(Descriptions will be added gradually)
+<p>In the previous sections of the course, MongoDB was used for storing data, which is a so called NoSQL database. In this section, the course explores different NodeJS applications that use relational databases, and focus is on using the database PostgreSQL which is the number one in the open source world.</p>
 
 # Achievements
 N/A
