@@ -10,7 +10,7 @@ export type EntryBase = {
     type: string;
     specialist: string;
     description: string;
-    diagnosisCodes?: string[];
+    diagnosisCodes?:  Array<Diagnosis['code']>
 };
 
 interface Discharge {
@@ -32,11 +32,21 @@ export interface OccupationalHealthcareEntry extends EntryBase {
     sickLeave?: SickLeave;
 }
 
-export interface HealthCheckEntry extends EntryBase {
-    healthCheckRating?: number;
+export enum Rating {
+    'Healthy' = 0,
+    'LowRisk' = 1,
+    'HighRisk' = 2,
+    'CriticalRisk' = 3,
 }
 
-export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
+export interface HealthCheckEntry extends EntryBase {
+    healthCheckRating?: Rating;
+}
+
+export type Entry =
+    | HospitalEntry
+    | OccupationalHealthcareEntry
+    | HealthCheckEntry;
 
 export enum Gender {
     Male = 'male',
@@ -52,4 +62,10 @@ export interface Patient {
     ssn?: string;
     dateOfBirth?: string;
     entries: Entry[];
+}
+
+export enum EntryType {
+    Hospital = "Hospital",
+    OccupationalHealthcare = "OccupationalHealthcare",
+    HealthCheck = "HealthCheck"
 }
