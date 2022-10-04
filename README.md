@@ -24,7 +24,7 @@ The course is divided into 14 parts:
 <h4>Part 9 - TypeScript</h4>
 <p>This part is all about TypeScript: an open-source typed superset of JavaScript developed by Microsoft that compiles to plain JavaScript. In this part, the course implements tools previously introduced to build end-to-end features to an existing ecosystem with linters predefined and an existing codebase writing TypeScript.</p>
 <h4>Part 10 - React Native</h4>
-<p></p>
+<p>In this part, the course teaches how to build native Android and iOS mobile applications with JavaScript and React using the React Native framework. It dives into the React Native ecosystem by having us develop an entire mobile application from scratch. Along the way, it teaches concepts such as how to render native user interface components with React Native, how to create beautiful user interfaces, how to communicate with a server, and how to test a React Native application.</p>
 <h4>Part 11 - CI/CD</h4>
 <p></p>
 <h4>Part 12 - Containers</h4>
