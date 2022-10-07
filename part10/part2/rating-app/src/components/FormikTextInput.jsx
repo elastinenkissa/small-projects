@@ -5,8 +5,8 @@ import TextInput from './customUI/TextInput';
 import Text from './customUI/Text';
 import theme from '../theme';
 
-const FormikTextInput = ({ name, ...props }) => {
-    const [field, meta, helpers] = useField(name);
+const FormikTextInput = (props) => {
+    const [field, meta, helpers] = useField(props.name);
     const showError = meta.touched && meta.error;
 
     const borderColor = showError ? theme.colors.error : theme.colors.dark;
