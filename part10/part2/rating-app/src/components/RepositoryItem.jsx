@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
+import theme from '../theme';
 import Text from './customUI/Text';
 import StatCard from './StatCard';
 
@@ -16,7 +17,7 @@ const RepositoryItem = (props) => {
         },
         language: {
             padding: 5,
-            borderRadius: 3,
+            borderRadius: theme.borders.borderRadius,
         },
         flexContainer1: {
             flexDirection: 'row',
@@ -46,7 +47,7 @@ const RepositoryItem = (props) => {
                 <View style={styles.flexContainerChild2}>
                     <Text fontWeight="bold">{props.item.fullName}</Text>
                     <Text>{props.item.description}</Text>
-                    <Text blue style={styles.language}>
+                    <Text blue light style={styles.language}>
                         {props.item.language}
                     </Text>
                 </View>

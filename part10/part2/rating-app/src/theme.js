@@ -1,8 +1,10 @@
 const theme = {
     colors: {
-        textPrimary: '#24292e',
-        textSecondary: '#ffffff',
+        dark: '#24292e',
+        light: '#ffffff',
         primary: '#0366d6',
+        error: '#D8000C',
+        errorBackground: '#FFBABA'
     },
     fontSizes: {
         body: 14,
@@ -11,19 +13,26 @@ const theme = {
     },
     fonts: {
         main: 'System',
+        android: 'Roboto',
+        ios: 'Arial'
     },
     fontWeights: {
         normal: '400',
         bold: '900',
     },
-    backgroundColors: {
-        dark: '#24292e'
+    horizontalContainer: {
+        flexGrow: 1,
+        justifyContent: 'space-evenly',
+        flexDirecton: 'row',
+        alignItems: 'center'
     },
-    heights: {
-        appBarHeight: 80
+    borders: {
+        borderRadius: 3,
+        borderWidth: 0.5,
     },
-    flex: {
-        appBarJustify: 'center'
+    positioning: {
+        minimumMargin: 10,
+        minimumPadding: 10
     }
 };
 
