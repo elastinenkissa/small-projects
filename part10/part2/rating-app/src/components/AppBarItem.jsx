@@ -1,9 +1,11 @@
 import { StyleSheet, View } from 'react-native';
+import theme from '../theme';
 
 const AppBarItem = (props) => {
     const styles = StyleSheet.create({
         default: {
-            marginRight: 15,
+            marginRight: theme.positioning.minimumMargin,
+            marginLeft: theme.positioning.minimumMargin
         },
     });
     return (

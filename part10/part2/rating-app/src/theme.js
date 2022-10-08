@@ -22,7 +22,7 @@ const theme = {
     },
     horizontalContainer: {
         flexGrow: 1,
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
         flexDirecton: 'row',
         alignItems: 'center'
     },
