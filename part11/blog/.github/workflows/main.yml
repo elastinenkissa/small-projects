@@ -1,0 +1,92 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  main_deploy:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: '4.2'
+          mongodb-username: username
+          mongodb-password: password
+          mongodb-db: db
+      - name: install dependencies
+        run: npm install
+      - name: lint
+        run: npm run lint
+      - name: generate build
+        run: npm run build
+      - name: unit tests
+        env:
+          TEST_MONGODB_URL: ${{secrets.TEST_MONGODB_URL}}
+          SECRET: ${{secrets.JWT_SECRET}}
+        run: npm test
+      - name: e2e tests
+        uses: cypress-io/github-action@v4
+        env:
+          TEST_MONGODB_URL: ${{secrets.TEST_MONGODB_URL}}
+          SECRET: ${{secrets.JWT_SECRET}}
+        with:
+          build: npm run build
+          start: npm run start:test 
+          wait-on: http://localhost:3003
+      - name: heroku deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          healthcheck: "https://${{secrets.HEROKU_APP_NAME}}.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
+      - name: Success
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: ${{ success() }}
+        with:
+          severity: info
+          details: Deployment successful
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Fail
+        uses: rjstone/discord-webhook-notify@v1.0.4 
+        if: ${{ failure() }}
+        with:
+          severity: error
+          details: Deployment failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Cancel
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: ${{ cancelled() }}
+        with:
+          severity: warn
+          details: Deployment cancelled
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+  tag_release:
+    if: ${{ !contains( toJson(github.event.commits.*.message), '#skip') }} 
+    needs: [main_deploy]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1ffbb2e04bd950cffea99066469cb16d69a7887e
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch    
+
