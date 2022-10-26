@@ -2,6 +2,9 @@ require('express-async-errors');
 const express = require('express');
 
 const blogRouter = require('./controllers/blog');
+const userRouter = require('./controllers/user');
+const loginRouter = require('./controllers/login');
+const authorRouter = require('./controllers/author');
 
 const { PORT } = require('./util/config');
 const { connectDB } = require('./util/db');
@@ -13,7 +16,13 @@ app.use(express.json());
 
 app.use('/api/blogs', blogRouter);
 
-app.use(errorHandler)
+app.use('/api/users', userRouter);
+
+app.use('/api/login', loginRouter);
+
+app.use('/api/authors', authorRouter);
+
+app.use(errorHandler);
 
 const start = async () => {
   await connectDB();

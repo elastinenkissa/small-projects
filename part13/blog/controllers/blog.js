@@ -1,27 +1,66 @@
 const express = require('express');
-const Blog = require('../models');
+const { Op } = require('sequelize');
+const { Blog, User } = require('../models');
+const { getUser } = require('../util/middleware');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const blogs = await Blog.findAll();
+  let where = {};
+
+  if (req.query.search) {
+    where = {
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: `%${req.query.search}%`,
+          },
+        },
+        {
+          author: {
+            [Op.iLike]: `%${req.query.search}%`,
+          },
+        },
+      ],
+    };
+  }
+
+  const blogs = await Blog.findAll({
+    include: [
+      {
+        model: User,
+      },
+    ],
+    attributes: { exclude: ['userId'] },
+    where,
+    order: [['likes', 'DESC']],
+  });
   res.status(200).json(blogs);
 });
 
-router.post('/', async (req, res) => {
-  const newBlog = await Blog.create(req.body);
+router.post('/', getUser, async (req, res) => {
+  const user = req.user;
+
+  const newBlog = await Blog.build(req.body);
+  newBlog.userId = user.id;
+  newBlog.save();
+
   res.status(201).json(newBlog);
 });
 
-router.delete('/:id', async (req, res) => {
-  const deletingBlog = await Blog.destroy({
-    where: {
-      id: req.params.id,
-    },
-  });
+router.delete('/:id', getUser, async (req, res) => {
+  const user = req.user;
 
-  if (!deletingBlog) {
+  const blog = await Blog.findByPk(req.params.id);
+
+  if (!blog) {
     return res.status(404).json({ error: 'Blog does not exist' });
   }
+
+  if (blog.userId !== user.id) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  await blog.destroy();
 
   res.status(204).end();
 });
