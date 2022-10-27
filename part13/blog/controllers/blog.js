@@ -40,9 +40,7 @@ router.get('/', async (req, res) => {
 router.post('/', getUser, async (req, res) => {
   const user = req.user;
 
-  const newBlog = await Blog.build(req.body);
-  newBlog.userId = user.id;
-  newBlog.save();
+  const newBlog = await Blog.create({ ...req.body, userId: user.id });
 
   res.status(201).json(newBlog);
 });

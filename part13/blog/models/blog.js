@@ -25,13 +25,27 @@ Blog.init(
     likes: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0
-    }
+      defaultValue: 0,
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isYear: function (value) {
+          if (value >= 1991 && value <= new Date().getFullYear()) {
+            return true;
+          } else {
+            throw new Error(
+              'Year cannot be earlier than 1991 and cannot exceed the current year'
+            );
+          }
+        },
+      },
+    },
   },
   {
     sequelize,
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     modelName: 'blog',
   }
 );
