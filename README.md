@@ -43,7 +43,7 @@ The course is divided into 14 parts:
 </ul>
 <h3>Certification</h3>
  <ul>
-  <li>Fullstack Open</li>
+  <li>Fullstack Open - Fullstack</li>
   <li>Fullstack Open - GraphQL</li>
   <li>Fullstack Open - TypeScript</li>
   <li>Fullstack Open - React Native</li>
