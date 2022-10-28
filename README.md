@@ -33,4 +33,21 @@ The course is divided into 14 parts:
 <p>In the previous sections of the course, MongoDB was used for storing data, which is a so called NoSQL database. In this section, the course explores different NodeJS applications that use relational databases, and focus is on using the database PostgreSQL which is the number one in the open source world.</p>
 
 # Achievements
-N/A
+<h3>General</h3>
+<ul>
+  <li>Deep and firm understanding of full stack web and mobile application development</li>
+  <li>Fortified knowledge of the MERN stack</li>
+  <li>Fortified knowledge of SPA, REST API, MVC and state management</li>
+  <li>Gained knowledge of working in a team-based environment with CI/CD and containers</li>
+  <li>Gained knowledge of GraphQL API, typed JavaScript and using relational databases in JavaScript applications</li>
+</ul>
+<h3>Certification</h3>
+ <ul>
+  <li>Fullstack Open</li>
+  <li>Fullstack Open - GraphQL</li>
+  <li>Fullstack Open - TypeScript</li>
+  <li>Fullstack Open - React Native</li>
+  <li>Fullstack Open - CI/CD</li>
+  <li>Fullstack Open - Containers</li>
+  <li>Fullstack Open - Relational Databases</li>
+ </ul>
