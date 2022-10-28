@@ -5,14 +5,41 @@ const bcrypt = require('bcrypt');
 const { User, Blog } = require('../models');
 
 router.get('/', async (req, res) => {
-  try {
-    const users = await User.findAll({
-      include: { model: Blog, attributes: { exclude: ['userId'] } },
-    });
-    res.status(200).json(users);
-  } catch (error) {
-    console.log(error);
+  const users = await User.findAll({
+    include: { model: Blog, attributes: { exclude: ['userId'] } },
+  });
+
+  if (!users) {
+    return res.status(404).json({ message: 'No users found' });
   }
+
+  res.status(200).json(users);
+});
+
+router.get('/:id', async (req, res) => {
+  let where = {};
+
+  if (req.query) {
+    where = { ...req.query };
+  }
+
+  const user = await User.findByPk(req.params.id, {
+    include: {
+      model: Blog,
+      as: 'readings',
+      attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
+      through: {
+        attributes: ['id', 'read'],
+        where,
+      },
+    },
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: 'No user found' });
+  }
+
+  res.status(200).json(user);
 });
 
 router.post('/', async (req, res) => {

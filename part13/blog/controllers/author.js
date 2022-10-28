@@ -13,6 +13,11 @@ router.get('/', async (req, res) => {
     ],
     order: [['likes', 'DESC']],
   });
+
+  if (!authors) {
+    return res.status(404).json({ message: 'No authors found' });
+  }
+
   res.status(200).json(authors);
 });
 

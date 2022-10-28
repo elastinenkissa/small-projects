@@ -1,7 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const { Blog, User } = require('../models');
-const { getUser } = require('../util/middleware');
+const { getUser, getSession } = require('../util/middleware');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -34,19 +34,34 @@ router.get('/', async (req, res) => {
     where,
     order: [['likes', 'DESC']],
   });
+
+  if (!blogs) {
+    return res.status(404).json({ message: 'No blogs found' });
+  }
+
   res.status(200).json(blogs);
 });
 
-router.post('/', getUser, async (req, res) => {
+router.post('/', getUser, getSession, async (req, res) => {
   const user = req.user;
+  const session = req.session;
+
+  if (!session) {
+    return res.status(401).json({ error: 'Session expired' });
+  }
 
   const newBlog = await Blog.create({ ...req.body, userId: user.id });
 
   res.status(201).json(newBlog);
 });
 
-router.delete('/:id', getUser, async (req, res) => {
+router.delete('/:id', getUser, getSession, async (req, res) => {
   const user = req.user;
+  const session = req.session;
+
+  if (!session) {
+    return res.status(401).json({ error: 'Session expired' });
+  }
 
   const blog = await Blog.findByPk(req.params.id);
 
